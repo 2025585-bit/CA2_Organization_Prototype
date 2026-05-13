@@ -36,5 +36,32 @@ public class BinaryTree {
 
     public Node getRoot() { return root; }
     
-    // Base structure for now, insertion will be in the next commit
+    public void insertLevelOrder(String name, String managerType, String department) {
+        Node newNode = new Node(name, managerType, department);
+        if (root == null) {
+            root = newNode;
+            return;
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            Node temp = queue.poll();
+
+            if (temp.left == null) {
+                temp.left = newNode;
+                break;
+            } else {
+                queue.add(temp.left);
+            }
+
+            if (temp.right == null) {
+                temp.right = newNode;
+                break;
+            } else {
+                queue.add(temp.right);
+            }
+        }
+    }
 }
