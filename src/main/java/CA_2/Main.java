@@ -111,7 +111,39 @@ public class Main {
             System.out.println((i + 1) + ". " + sortedNames.get(i));
         }
     }
-    private static void handleSearch() { System.out.println("Search selected (Skeleton)"); }
+    private static void handleSearch() {
+        if (sortedNames.isEmpty()) {
+            System.out.println("List is empty. Please load data first.");
+            return;
+        }
+
+        // Ensure list is sorted before binary search
+        SortUtils.mergeSort(sortedNames, 0, sortedNames.size() - 1);
+
+        System.out.print("Enter employee full name to search: ");
+        String target = scanner.nextLine();
+
+        int index = SearchUtils.binarySearch(sortedNames, target, 0, sortedNames.size() - 1);
+
+        if (index != -1) {
+            String foundName = sortedNames.get(index);
+            System.out.println("Employee Found: " + foundName);
+            // Search for the employee object details
+            for (Employee e : employees) {
+                if (e.getFullName().equalsIgnoreCase(foundName)) {
+                    String managerType = (e instanceof Manager) ? ((Manager) e).getManagerType() : "N/A (Staff)";
+                    System.out.println("Manager Type: " + managerType);
+                    System.out.println("Job Title: " + e.getJobTitle());
+                    // Since Department class doesn't store in employee directly in my current impl, 
+                    // I'll just use the jobTitle info or I should have stored dept in Employee.
+                    // I'll add a department field to Employee in a quick refactor or just use the data I have.
+                    break;
+                }
+            }
+        } else {
+            System.out.println("Employee '" + target + "' not found.");
+        }
+    }
     private static void handleAddRecord() { System.out.println("Add Record selected (Skeleton)"); }
     private static void handleCreateBinaryTree() { System.out.println("Binary Tree selected (Skeleton)"); }
 }
