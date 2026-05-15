@@ -11,6 +11,7 @@ public class Main {
     private static BinaryTree hierarchy = new BinaryTree();
 
     public static void main(String[] args) {
+        loadEmployeesFromFile();
         boolean exit = false;
         while (!exit) {
             displayMenu();
@@ -60,6 +61,42 @@ public class Main {
         int input = scanner.nextInt();
         scanner.nextLine(); // consume newline
         return input;
+    }
+
+    private static void loadEmployeesFromFile() {
+        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+            String line;
+            br.readLine(); // skip header
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length < 8) continue;
+
+                String firstName = data[0].trim();
+                String lastName = data[1].trim();
+                String email = data[3].trim();
+                double salary = Double.parseDouble(data[4].trim());
+                String deptName = data[5].trim();
+                String jobTitle = data[7].trim();
+
+                Employee employee;
+                if (jobTitle.contains("Head Manager")) {
+                    employee = new HeadManager(firstName, lastName, email, salary, jobTitle);
+                } else if (jobTitle.contains("Assistant Manager")) {
+                    employee = new AssistantManager(firstName, lastName, email, salary, jobTitle);
+                } else if (jobTitle.contains("Senior Manager") || jobTitle.contains("Manager")) {
+                    employee = new TeamLead(firstName, lastName, email, salary, jobTitle); // Defaulting to TeamLead for generic Manager
+                } else if (jobTitle.contains("Team Lead")) {
+                    employee = new TeamLead(firstName, lastName, email, salary, jobTitle);
+                } else {
+                    employee = new FullTimeEmployee(firstName, lastName, email, salary, jobTitle);
+                }
+                employees.add(employee);
+                sortedNames.add(employee.getFullName());
+            }
+            System.out.println("File read successfully: " + employees.size() + " records loaded.");
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 
     // Skeletons for now, implementation in following commits
