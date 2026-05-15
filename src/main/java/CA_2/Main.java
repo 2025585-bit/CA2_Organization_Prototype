@@ -100,7 +100,17 @@ public class Main {
     }
 
     // Skeletons for now, implementation in following commits
-    private static void handleSort() { System.out.println("Sort selected (Skeleton)"); }
+    private static void handleSort() {
+        if (sortedNames.isEmpty()) {
+            System.out.println("No records to sort.");
+            return;
+        }
+        SortUtils.mergeSort(sortedNames, 0, sortedNames.size() - 1);
+        System.out.println("\n--- Sorted List (First 20) ---");
+        for (int i = 0; i < Math.min(20, sortedNames.size()); i++) {
+            System.out.println((i + 1) + ". " + sortedNames.get(i));
+        }
+    }
     private static void handleSearch() { System.out.println("Search selected (Skeleton)"); }
     private static void handleAddRecord() { System.out.println("Add Record selected (Skeleton)"); }
     private static void handleCreateBinaryTree() { System.out.println("Binary Tree selected (Skeleton)"); }
