@@ -144,6 +144,64 @@ public class Main {
             System.out.println("Employee '" + target + "' not found.");
         }
     }
-    private static void handleAddRecord() { System.out.println("Add Record selected (Skeleton)"); }
+    private static void handleAddRecord() {
+        System.out.println("\n--- Add New Employee Record ---");
+        System.out.print("Enter First Name: ");
+        String firstName = scanner.nextLine();
+        System.out.print("Enter Last Name: ");
+        String lastName = scanner.nextLine();
+
+        System.out.println("Select Manager Type:");
+        System.out.println("1. Head Manager");
+        System.out.println("2. Assistant Manager");
+        System.out.println("3. Team Lead");
+        System.out.println("4. Staff (Not a Manager)");
+        int mChoice = getIntInput("Choice: ");
+
+        System.out.println("Select Department:");
+        System.out.println("1. IT Development");
+        System.out.println("2. Sales");
+        System.out.println("3. HR");
+        int dChoice = getIntInput("Choice: ");
+
+        String deptName;
+        switch (dChoice) {
+            case 1: deptName = "IT Development"; break;
+            case 2: deptName = "Sales"; break;
+            case 3: deptName = "HR"; break;
+            default:
+                System.out.println("Invalid Department selection.");
+                return;
+        }
+
+        Employee employee;
+        String jobTitle = "New Employee";
+        String email = (firstName + "." + lastName + "@organization.com").toLowerCase();
+        double salary = 30000.00;
+
+        switch (mChoice) {
+            case 1:
+                employee = new HeadManager(firstName, lastName, email, salary, "Head Manager");
+                break;
+            case 2:
+                employee = new AssistantManager(firstName, lastName, email, salary, "Assistant Manager");
+                break;
+            case 3:
+                employee = new TeamLead(firstName, lastName, email, salary, "Team Lead");
+                break;
+            case 4:
+                employee = new FullTimeEmployee(firstName, lastName, email, salary, "Staff");
+                break;
+            default:
+                System.out.println("Invalid Manager Type selection.");
+                return;
+        }
+
+        employees.add(employee);
+        sortedNames.add(employee.getFullName());
+        System.out.println("\n\"" + employee.getFullName() + "\" has been added as \"" + 
+                           ((employee instanceof Manager) ? ((Manager) employee).getManagerType() : "Staff") + 
+                           "\" to \"" + deptName + "\" successfully!");
+    }
     private static void handleCreateBinaryTree() { System.out.println("Binary Tree selected (Skeleton)"); }
 }
