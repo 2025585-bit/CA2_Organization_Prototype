@@ -203,5 +203,25 @@ public class Main {
                            ((employee instanceof Manager) ? ((Manager) employee).getManagerType() : "Staff") + 
                            "\" to \"" + deptName + "\" successfully!");
     }
-    private static void handleCreateBinaryTree() { System.out.println("Binary Tree selected (Skeleton)"); }
+    private static void handleCreateBinaryTree() {
+        if (employees.size() < 20) {
+            System.out.println("Insufficient records (need at least 20, currently have " + employees.size() + ").");
+            return;
+        }
+
+        hierarchy = new BinaryTree();
+        // Insert first 20 records into the tree in level order
+        for (int i = 0; i < Math.max(20, employees.size()); i++) {
+            Employee e = employees.get(i);
+            String managerType = (e instanceof Manager) ? ((Manager) e).getManagerType() : "Staff";
+            // We'll use IT Development as default if not found (simple mapping for tree storage)
+            hierarchy.insertLevelOrder(e.getFullName(), managerType, "Organization");
+        }
+
+        System.out.println("\n--- Employee Hierarchy (Level Order Traversal) ---");
+        hierarchy.displayLevelOrder();
+
+        System.out.println("\nTree Height: " + hierarchy.getHeight(hierarchy.getRoot()));
+        System.out.println("Total Node Count: " + hierarchy.getNodeCount(hierarchy.getRoot()));
+    }
 }
