@@ -63,6 +63,8 @@ public class BinaryTree {
                 queue.add(temp.right);
             }
         }
+    }
+    
     public void displayLevelOrder() {
         if (root == null) {
             System.out.println("Tree is empty.");
